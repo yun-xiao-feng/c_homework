@@ -17,6 +17,7 @@ class SceneTitle : public Scene
     virtual void handleEvent(SDL_Event *event) override;
     private:
     Mix_Music *bgm;
+    float time=0.0f;
 
 };
 

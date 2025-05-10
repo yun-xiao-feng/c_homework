@@ -12,7 +12,6 @@ class Game;
 class Scenemain : public Scene
 {
 public:
-    Scenemain();
     ~Scenemain();
     void init() override;
     void clean() override;
@@ -26,6 +25,7 @@ private:
     SDL_Texture *uiHealth;
     TTF_Font *scorefont;
     int score = 0;
+    float timeEnd=0.0f;
 
     bool isDead = false;
     std::mt19937 gen;
@@ -63,6 +63,7 @@ private:
     void updateItems(float deltaTime);
     void keyboardControl(float deltaTime);
     void spawEnemy();
+    void changeSceneDelayed(float deltatime,float delay);
     // 其他
     void playerGetItem(Item *item);
     void shootPlayer();
@@ -70,6 +71,7 @@ private:
     SDL_FPoint getDirection(Enemy *enemy);
     void enemyExplode(Enemy *enemy);
     void dropItem(Enemy *enemy);
+    
 };
 
 #endif

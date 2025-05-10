@@ -20,6 +20,7 @@ add_executable(SDL_testhomework
 "src/Scene.cpp"
 "src/SceneTitle.cpp"
 "src/Scenemain.cpp"
+"src/SceneEnd.cpp"
 )
 #链接库
 target_link_libraries(SDL_testhomework 

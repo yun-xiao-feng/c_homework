@@ -8,6 +8,7 @@
 #include<SDL_ttf.h>
 #include<SDL_mixer.h>
 #include<string>
+#include<map>
 
 class Game
 {
@@ -27,12 +28,17 @@ void update(float deltaTime);
 void render();
 void backgroudUpdate(float deltaTime);
 void renderBackground();
+int getFinalscore(){return finalScore;};
+void setFinalscore(int score){finalScore = score;};
+void renderTextPoser(std::string text,int posx,int posy, bool istitle,bool isleft=true);
 //渲染文字
-void renderTextCenter(std::string text,float posy, bool istitle);
+SDL_Point renderTextCenter(std::string text,float posy, bool istitle);
 SDL_Window* getWindow(){return window;};
 SDL_Renderer* getRenderer(){return renderer;};
 int getWindowWidth(){return windowWidth;};
 int getWindowHeight(){return windowHeight;};
+std::multimap<int,std::string,std::greater<int>>& getLeaderBoard(){return leaderBoard;};
+void insertLeaderBoard(int score,std::string name);
 private:
 Game();
 //删除拷贝 赋值 构造函数
@@ -51,9 +57,15 @@ TTF_Font* textFont;
 int FPS=60;
 Uint32 frameTime;
 float deltaTime;
+int finalScore=0;
+std::multimap<int,std::string,std::greater<int>> leaderBoard;
 
 Background nearStars;
 Background farStars;
+void saveData();
+void loadData();
+
+
 };
 
 #endif

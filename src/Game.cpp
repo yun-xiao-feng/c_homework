@@ -6,11 +6,48 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#include<fstream>
 
 Game::Game() {}
 
+void Game::saveData()
+{
+std::ofstream file("assets/save.dat");
+if(!file.is_open()){
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open file");
+    return;
+}
+for(const auto& pair : leaderBoard){
+    file << pair.first << " " << pair.second << std::endl;
+}
+}
+
+void Game::loadData()
+{
+    std::ifstream file("assets/save.dat");
+    if(!file.is_open()){
+        SDL_Log("Unable to open file");
+        return;
+    }
+    leaderBoard.clear();
+    int score;
+    std::string name;
+    while(file >> score >> name){
+        leaderBoard.insert({score, name});
+    }
+}
+
+void Game::insertLeaderBoard(int score, std::string name)
+{
+    leaderBoard.insert({score, name});
+    if(leaderBoard.size() > 8){
+        leaderBoard.erase(--leaderBoard.end());
+    }
+}
+
 Game::~Game()
 {
+    saveData();
     clean();
 }
 
@@ -91,6 +128,7 @@ void Game::init()
         isRunning = false;
     }
 
+    loadData();
 
 
     currentScene = new SceneTitle();
@@ -239,7 +277,7 @@ void Game::renderBackground()
     }
 }
 
-void Game::renderTextCenter(std::string text, float posy, bool istitle)
+SDL_Point Game::renderTextCenter(std::string text, float posy, bool istitle)
 {
     SDL_Color color = {255, 255, 255, 255};
     SDL_Surface *surface;
@@ -255,5 +293,29 @@ void Game::renderTextCenter(std::string text, float posy, bool istitle)
     SDL_RenderCopy(renderer, texture, nullptr, &Rect);
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
+return {Rect.x+Rect.w, Rect.y};
+}
 
+void Game::renderTextPoser(std::string text, int posx, int posy, bool istitle,bool isLeft)
+{
+    SDL_Color color = {255, 255, 255, 255};
+    SDL_Surface *surface;
+    if(istitle){
+    surface = TTF_RenderUTF8_Solid(titleFont, text.c_str(), color);
+    }
+    else{
+    surface = TTF_RenderUTF8_Solid(textFont, text.c_str(), color);
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Rect Rect;
+    if(isLeft){
+    Rect = {static_cast<int> (posx),static_cast<int> (posy), surface->w, surface->h};
+    }
+    else{
+    Rect = {getWindowWidth() - surface->w - static_cast<int> (posx),static_cast<int> (posy), surface->w, surface->h};
+    }
+    SDL_RenderCopy(renderer, texture, nullptr, &Rect);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
 }
