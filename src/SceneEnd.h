@@ -2,6 +2,7 @@
 #define SCENE_END_H
 #include "Scene.h"
 #include<string>
+#include<SDL_mixer.h>
 
 class SceneEnd : public Scene
 {
@@ -12,6 +13,7 @@ public:
     void clean();
     void handleEvent(SDL_Event *event);
     private:
+    Mix_Music *bgm;
     bool isTyping=true;
     void renderPhase1();
     void renderPhase2();

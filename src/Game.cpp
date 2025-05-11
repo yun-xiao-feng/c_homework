@@ -74,6 +74,8 @@ void Game::init()
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Render could not be created! SDL_Error: %s\n", SDL_GetError());
         isRunning = false;
     }
+    //全屏
+    SDL_RenderSetLogicalSize(renderer, windowWidth, windowHeight);
 
     // 初始SDL_Image
     if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
@@ -215,6 +217,17 @@ void Game::handleEvents(SDL_Event *event)
         if (event->type == SDL_QUIT)
         {
             isRunning = false;
+        }
+        if( event->type == SDL_KEYDOWN){
+            if (event->key.keysym.scancode == SDL_SCANCODE_F){
+                isFullScreen = !isFullScreen;
+                if( isFullScreen){
+                SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+            }
+                else{
+                    SDL_SetWindowFullscreen(window, 0);
+                }
+        }
         }
         currentScene->handleEvent(event);
     }

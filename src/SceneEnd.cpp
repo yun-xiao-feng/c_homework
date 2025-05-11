@@ -5,6 +5,13 @@
 #include"Scenemain.h"
 void SceneEnd::init()
 {
+    //bgm
+    bgm = Mix_LoadMUS("assets/music/06_Battle_in_Space_Intro.ogg");
+    if(!bgm){
+        SDL_LogError(SDL_LOG_PRIORITY_ERROR, "SDL", "Failed to load music: %s", SDL_GetError());
+    }
+    Mix_PlayMusic(bgm, -1);
+
     if (!SDL_IsTextInputActive())
     {
         SDL_StartTextInput();
@@ -35,6 +42,10 @@ void SceneEnd::render()
 }
 void SceneEnd::clean()
 {
+    if(bgm!= nullptr){
+        Mix_HaltMusic();
+        Mix_FreeMusic(bgm);
+    }
 }
 
 void SceneEnd::handleEvent(SDL_Event *event)

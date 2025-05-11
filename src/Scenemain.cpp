@@ -43,8 +43,8 @@ void Scenemain::init()
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to load PLAYER TEXTURE!:%s", SDL_GetError());
     }
     SDL_QueryTexture(player.texture, NULL, NULL, &player.width, &player.height);
-    player.width /= 4;
-    player.height /= 4;
+    player.width /= 5;
+    player.height /= 5;
     player.position.x = float(game.getWindowWidth()) / 2 - float(player.width) / 2;
     player.position.y = float(game.getWindowHeight()) - float(player.height);
 
@@ -61,12 +61,13 @@ void Scenemain::init()
 
     projectileEnemyTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/bullet-1.png");
     SDL_QueryTexture(projectileEnemyTemplate.texture, NULL, NULL, &projectileEnemyTemplate.width, &projectileEnemyTemplate.height);
-    projectileEnemyTemplate.width /= 4;
-    projectileEnemyTemplate.height /= 4;
+    projectileEnemyTemplate.width /= 2;
+    projectileEnemyTemplate.height /= 2;
 
     explosionTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/effect/explosion.png");
     SDL_QueryTexture(explosionTemplate.texture, NULL, NULL, &explosionTemplate.width, &explosionTemplate.height);
     explosionTemplate.totalFrame = explosionTemplate.width / explosionTemplate.height;
+    explosionTemplate.height*=2;
     explosionTemplate.width = explosionTemplate.height;
 
     itemLifeTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/bonus_life.png");
@@ -546,7 +547,7 @@ void Scenemain::renderExplosions()
 {
     for (auto explosion : explosions)
     {
-        SDL_Rect src = {explosion->currentFrame * explosion->width, 0, explosion->width, explosion->height};
+        SDL_Rect src = {explosion->currentFrame * explosion->width, 0, explosion->width/2, explosion->height};
         SDL_Rect dst = {
             static_cast<int>(explosion->position.x),
             static_cast<int>(explosion->position.y),

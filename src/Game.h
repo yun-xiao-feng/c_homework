@@ -40,6 +40,7 @@ int getWindowHeight(){return windowHeight;};
 std::multimap<int,std::string,std::greater<int>>& getLeaderBoard(){return leaderBoard;};
 void insertLeaderBoard(int score,std::string name);
 private:
+bool isFullScreen = false;
 Game();
 //删除拷贝 赋值 构造函数
 Game(const Game&) = delete;
